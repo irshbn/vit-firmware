@@ -5,7 +5,7 @@ yocto_sstate_dir = "$HOME/.cache/yocto/sstate-cache"
 
 [tasks.build-yocto]
 description = "Build the xilinx-yocto buildserver image"
-sources = ["Dockerfile"]
+sources = ["Dockerfile", "docker-entrypoint.sh"]
 run = '''
 docker build \
 --build-arg UID=$(id -u) \
@@ -22,7 +22,7 @@ docker run \
 --device=/dev/net/tun:/dev/net/tun \
 --cap-add NET_ADMIN \
 --hostname buildserver \
--it \
+-it --rm \
 -v /tftpboot:/tftpboot \
 -v {{vars.yocto_dl_dir}}:/home/build/downloads \
 -v {{vars.yocto_sstate_dir}}:/home/build/sstate-cache \
