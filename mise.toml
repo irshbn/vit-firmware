@@ -1,0 +1,31 @@
+[vars]
+docker_image_name = "local/xil-yocto"
+yocto_dl_dir = "$HOME/.cache/yocto/downloads"
+yocto_sstate_dir = "$HOME/.cache/yocto/sstate-cache"
+
+[tasks.build-yocto]
+description = "Build the xilinx-yocto buildserver image"
+sources = ["Dockerfile"]
+run = '''
+docker build \
+--build-arg UID=$(id -u) \
+--build-arg GID=$(id -g) \
+-t {{vars.docker_image_name}} .
+'''
+
+[tasks.start-yocto]
+description = "Start the containerized xilinx-yocto buildserver"
+run = '''
+mkdir -p yocto {{vars.yocto_dl_dir}} {{vars.yocto_sstate_dir}} && \
+docker run \
+--device=/dev/kvm:/devb/kvm \
+--device=/dev/net/tun:/dev/net/tun \
+--cap-add NET_ADMIN \
+--hostname buildserver \
+-it \
+-v /tftpboot:/tftpboot \
+-v {{vars.yocto_dl_dir}}:/home/build/downloads \
+-v {{vars.yocto_sstate_dir}}:/home/build/sstate-cache \
+-v $(pwd)/yocto:/home/build/work \
+{{vars.docker_image_name}}
+'''
