@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -e
+
+#MISE description="Build the xilinx-yocto buildserver image"
+#MISE sources=["Dockerfile", "docker-entrypoint.sh"]
+
+#USAGE arg "<reference>" help="Docker reference for the newly built yocto image" env="YOCTO_IMAGE"
+
+IMAGE_REFERENCE="${usage_reference?}"
+
+docker build \
+--build-arg UID="$(id -u)" \
+--build-arg GID="$(id -g)" \
+-t "$IMAGE_REFERENCE" .

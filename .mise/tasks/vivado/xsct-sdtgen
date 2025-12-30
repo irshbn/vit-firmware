@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -e
+
+#MISE description="Generate devicetree files from vivado-built xsa"
+
+cd vivado/project
+vivado -mode batch -nolog -nojournal "$(find -- *.xpr)" \
+  -source ../scripts/xsa.tcl -tclargs ../build/system.xsa
+xsct ../scripts/sdt.tcl ../build/system.xsa ../../devicetree

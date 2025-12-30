@@ -1,2 +1,9 @@
 # Ignore yocto builds
-yocto/
+/yocto/
+
+# Ignore vivado project & build files
+/vivado/project/
+/vivado/build/
+
+# Ignore devicetree build files
+/devicetree/

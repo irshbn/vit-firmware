@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install --no-install-recommends -yq \
     python3-pexpect \
     python3-pip \
     python3-subunit \
+    python3-yaml \
     socat \
     ssh \ 
     sudo \
@@ -58,7 +59,6 @@ WORKDIR /home/build
 RUN git config --global user.email "build@example.com" && git config --global user.name "build"
 
 # Make sure downloads and sstate are cached in dedicated directories
-RUN mkdir downloads sstate-cache
 ENV BB_ENV_PASSTHROUGH_ADDITIONS="DL_DIR SSTATE_DIR"
 ENV DL_DIR="/home/build/downloads"
 ENV SSTATE_DIR="/home/build/sstate-cache"

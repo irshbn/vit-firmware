@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+#MISE description="Open Vivado GUI on an existing project"
+
+cd vivado/project
+vivado "$(find -- *.xpr)"

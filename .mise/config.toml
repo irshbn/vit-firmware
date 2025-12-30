@@ -1,0 +1,2 @@
+[env]
+YOCTO_IMAGE = "xil-yocto"
