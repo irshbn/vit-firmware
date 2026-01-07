@@ -1,0 +1,7 @@
+# Description: Creates a partitioned SD card image.
+# Boot files are located in the first partition (vfat).
+# Rootfs is in the second partition (ext4).
+# Home partition is the third partition (ext4)
+part --source bootimg-partition --fstype=vfat --label boot --active --align 4 --fixed-size 128M
+part /     --source rootfs --rootfs-dir=${IMAGE_ROOTFS}      --fstype=ext4 --label root --align 4 --fixed-size 256M
+part /home --source rootfs --rootfs-dir=${IMAGE_ROOTFS}/home --fstype=ext4 --label home --align 4 --fixed-size 1M --ondisk mmcblk0

@@ -1,0 +1,15 @@
+[Unit]
+# This service should run only once at the very first boot
+# The script is responsible for disabling the service
+Description=Resize /home partition on first boot
+Before=home.mount
+After=dev-disk-by\\x2dlabel-home.device
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/grow-home.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=home.mount
