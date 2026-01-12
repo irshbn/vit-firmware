@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -e
+
+#MISE description="Recreate Vivado project from a .tcl script"
+#MISE outputs=["vivado/project"]
+
+#USAGE flag "-l --log" {
+#USAGE  arg <file>
+#USAGE  help "Path to place a log file (relative to vivado/project) [default: no logging]"
+#USAGE }
+#USAGE flag "-j --journal" {
+#USAGE  arg <file>
+#USAGE  help "Path to place a journal file (relative to vivado/project) [default: no journaling]"
+#USAGE }
+#USAGE flag "-f --force" help="Recreate project even if it already exists"
+
+FORCE=${usage_force:-false}
+
+[[ ! -d vivado/project ]] || if [[ "$FORCE" == "true" ]]; then
+  rm -rf vivado/project && mkdir vivado/project
+else
+  echo "Project already exists. Use --force if you want to recreate it from scratch" >&2 && exit 1
+fi
+
+cd vivado/project
+
+if [[ -z $usage_log ]]; then LOG="-nolog"; else LOG="-log $usage_log"; fi
+if [[ -z $usage_journal ]]; then JOU="-nojournal"; else JOU="-journal $usage_journal"; fi
+
+vivado -mode batch "$LOG" "$JOU" -source ../scripts/create.tcl -tclargs

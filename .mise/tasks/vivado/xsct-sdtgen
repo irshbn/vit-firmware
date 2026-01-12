@@ -3,7 +3,27 @@ set -e
 
 #MISE description="Generate devicetree files from vivado-built xsa"
 
+#USAGE flag "-l --log" {
+#USAGE  arg <file>
+#USAGE  help "Path to place a log file (relative to vivado/project) [default: no logging]"
+#USAGE }
+#USAGE flag "-j --journal" {
+#USAGE  arg <file>
+#USAGE  help "Path to place a journal file (relative to vivado/project) [default: no journaling]"
+#USAGE }
+#USAGE arg "<hw-description>" help="Path to vivado-built .xsa file (relative to vivado/project)"
+
+# Handle logging/journaling
+if [[ -z $usage_log ]]; then LOG="-nolog"; else LOG="-log $usage_log"; fi
+if [[ -z $usage_journal ]]; then JOU="-nojournal"; else JOU="-journal $usage_journal"; fi
+
+# Perform sdt generation
+XSA=${usage_hw_description?}
+
 cd vivado/project
-vivado -mode batch -nolog -nojournal "$(find -- *.xpr)" \
-  -source ../scripts/xsa.tcl -tclargs ../build/system.xsa
-xsct ../scripts/sdt.tcl ../build/system.xsa ../../devicetree
+vivado -mode batch "$LOG" "$JOU" "$(find -- *.xpr)" -source ../scripts/xsa.tcl -tclargs "$XSA"
+xsct ../scripts/sdt.tcl "$XSA" devicetree
+
+# Write-protect line on axu2cgb sd-card interface is inverted which forces it to be read-only
+# Here we fix it by adding `wp-inverted;` flag to `sdhci1` node in the devicetree
+sed -i '/sdhci1/a\\t\t\twp-inverted;' devicetree/zynqmp.dtsi

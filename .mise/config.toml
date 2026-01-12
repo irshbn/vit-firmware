@@ -1,2 +1,5 @@
 [env]
 YOCTO_IMAGE = "xil-yocto"
+
+[tools]
+usage = "latest"

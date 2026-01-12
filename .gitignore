@@ -13,9 +13,11 @@
 !/yocto/build/conf/bblayers.conf
 
 
-# Ignore vivado project & build files
+# Ignore vivado project & build files and stacktraces
 /vivado/project/
 /vivado/build/
+*.pid
+
 
 # Ignore devicetree build files
 /devicetree/

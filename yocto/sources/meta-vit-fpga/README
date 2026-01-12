@@ -5,37 +5,21 @@ Please see the corresponding sections below for details.
 Dependencies
 ============
 
-  URI: <first dependency>
-  branch: <branch name>
+  URI: https://git.yoctoproject.org/meta-petalinux
+  branch: scarthgap
 
-  URI: <second dependency>
-  branch: <branch name>
+Maintainer
+==========
 
-  .
-  .
-  .
-
-Patches
-=======
-
-Please submit any patches against the meta-vit-fpga layer to the xxxx mailing list (xxxx@zzzz.org)
-and cc: the maintainer:
-
-Maintainer: XXX YYYYYY <xxx.yyyyyy@zzzzz.com>
+Iaroslav Shubin <iar.shubin@gmail.com>
 
 Table of Contents
 =================
 
   I. Adding the meta-vit-fpga layer to your build
- II. Misc
-
 
 I. Adding the meta-vit-fpga layer to your build
 =================================================
 
 Run 'bitbake-layers add-layer meta-vit-fpga'
-
-II. Misc
-========
-
---- replace with specific information about the meta-vit-fpga layer ---
+Add 'IMAGE_INSTALL:append = " grow-home"' to your local.conf

@@ -3,16 +3,16 @@ set -e
 
 #MISE description="Start the containerized xilinx-yocto buildserver"
 
-#USAGE flag "--dl-cache <DIR>" { 
-#USAGE  arg <DIR>
-#USAGE  help "Yocto downloads cache local bind mount [default: $XDG_CACHE_HOME/yocto/downloads]" 
-#USAGE  env "YOCTO_DL_DIR" 
+#USAGE flag "--dl-cache" {
+#USAGE  arg <dir>
+#USAGE  help "Yocto downloads cache local bind mount [default: $XDG_CACHE_HOME/yocto/downloads]"
+#USAGE  env "YOCTO_DL_DIR"
 #USAGE  default "$XDG_CACHE_HOME/yocto/downloads"
 #USAGE }
 #USAGE flag "--sstate-cache" {
-#USAGE  arg <DIR>
-#USAGE  help "Yocto sstate-cache local bind mount [default: $XDG_CACHE_HOME/yocto/sstate-cache]" 
-#USAGE  env "YOCTO_SSTATE_DIR" 
+#USAGE  arg <dir>
+#USAGE  help "Yocto sstate-cache local bind mount [default: $XDG_CACHE_HOME/yocto/sstate-cache]"
+#USAGE  env "YOCTO_SSTATE_DIR"
 #USAGE  default "$XDG_CACHE_HOME/yocto/sstate-cache"
 #USAGE }
 #USAGE arg "<image>" help="Yocto docker image reference" env="YOCTO_IMAGE"
@@ -24,14 +24,14 @@ IMAGE_REFERENCE="${usage_image?}"
 
 mkdir -p yocto "$DL_DIR" "$SSTATE_DIR"
 docker run \
---device=/dev/kvm:/devb/kvm \
---device=/dev/net/tun:/dev/net/tun \
---cap-add NET_ADMIN \
---hostname buildserver \
--it --rm \
--v /tftpboot:/tftpboot \
--v "$DL_DIR":/home/build/downloads \
--v "$SSTATE_DIR":/home/build/sstate-cache \
--v "$(pwd)"/devicetree:/home/build/devicetree \
--v "$(pwd)"/yocto:/home/build/work \
-"$IMAGE_REFERENCE"
+  --device=/dev/kvm:/devb/kvm \
+  --device=/dev/net/tun:/dev/net/tun \
+  --cap-add NET_ADMIN \
+  --hostname buildserver \
+  -it --rm \
+  -v /tftpboot:/tftpboot \
+  -v "$DL_DIR":/home/build/downloads \
+  -v "$SSTATE_DIR":/home/build/sstate-cache \
+  -v "$(pwd)"/devicetree:/home/build/devicetree \
+  -v "$(pwd)"/yocto:/home/build/work \
+  "$IMAGE_REFERENCE"

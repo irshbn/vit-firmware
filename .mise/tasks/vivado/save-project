@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-#MISE description="Open Vivado GUI on an existing project"
+#MISE description="Save Vivado project to a .tcl script"
 
 #USAGE flag "-l --log" {
 #USAGE  arg <file>
@@ -16,4 +16,4 @@ if [[ -z $usage_log ]]; then LOG="-nolog"; else LOG="-log $usage_log"; fi
 if [[ -z $usage_journal ]]; then JOU="-nojournal"; else JOU="-journal $usage_journal"; fi
 
 cd vivado/project
-vivado "$LOG" "$JOU" "$(find -- *.xpr)"
+vivado -mode batch "$LOG" "$JOU" "$(find -- *.xpr)" -source ../scripts/save.tcl -tclargs ../scripts/create.tcl
