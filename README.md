@@ -23,7 +23,7 @@ by hand as bash scripts.
 > To view all available tasks run `mise tasks` or view the contents of
 > [.mise/tasks](./.mise/tasks/) directory manually. Additionally, all tasks
 > provide a [usage](https://usage.jdx.dev/) command line interface specification
-> so yo can get specific task reference info by running `mise run <task> -h`
+> so you can get specific task reference info by running `mise run <task> -h`
 
 ### Yocto build-server setup
 
@@ -86,4 +86,5 @@ In the end you should have a working petalinux distribution on your board
 ## Maintainers
 
 Iaroslav Shubin <iar.shubin@gmail.com>
+
 Aleksey Kuchkov <biblbroxxx@gmail.com>

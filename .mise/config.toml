@@ -1,5 +1,5 @@
 [env]
-YOCTO_IMAGE = "xil-yocto"
+YOCTO_IMAGE = { required = true }
 
 [tools]
 usage = "latest"

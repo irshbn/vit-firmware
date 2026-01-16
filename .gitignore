@@ -21,3 +21,7 @@
 
 # Ignore devicetree build files
 /devicetree/
+
+# Ignore user-defined local mise config
+.mise.local.toml
+mise.local.toml

@@ -9,6 +9,6 @@ set -e
 IMAGE_REFERENCE="${usage_reference?}"
 
 docker build \
---build-arg UID="$(id -u)" \
---build-arg GID="$(id -g)" \
--t "$IMAGE_REFERENCE" .
+  --build-arg UID="$(id -u)" \
+  --build-arg GID="$(id -g)" \
+  -t "$IMAGE_REFERENCE" .
