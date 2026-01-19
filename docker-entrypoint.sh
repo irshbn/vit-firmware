@@ -1,17 +1,19 @@
 #!/bin/bash
 set -e
 
-# Set xilinx-yocto branch here
-XILBRANCH=rel-v2024.2
+# If Xilinx branch is provided and workdir is mounted, run SDK setup
+if [[ -n $XIL_BRANCH && -d work ]]; then
+  cd work
 
-# Switch to workdir and initialise repo if there isn't one
-cd work
-
-if ! [ -d ".repo" ]; then
-  yes | repo init -u https://github.com/Xilinx/yocto-manifests.git -b $XILBRANCH
-  repo sync
+  if [[ ! -d ".repo" ]]; then
+    yes | repo init -u https://github.com/Xilinx/yocto-manifests.git -b "$XIL_BRANCH"
+    repo sync
+    source setupsdk build
+    bitbake-layers add-layer meta-vit-fpga
+    echo 'INHERIT += "rm_work"' >>conf/local.conf # Remove workdir artifacts after building by default
+  else
+    source setupsdk build
+  fi
 fi
 
-# Setup xilinx-yocto SDK env and run user-defined commands
-source setupsdk build
 exec "$@"

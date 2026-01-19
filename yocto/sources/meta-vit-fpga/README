@@ -6,7 +6,11 @@ Dependencies
 ============
 
   URI: https://git.yoctoproject.org/meta-petalinux
-  branch: scarthgap
+  branch: rel-v2024.2
+
+	URI: https://git.openembedded.org/meta-openembedded
+	layers: meta-networking
+	branch: scarthgap
 
 Maintainer
 ==========
@@ -22,4 +26,3 @@ I. Adding the meta-vit-fpga layer to your build
 =================================================
 
 Run 'bitbake-layers add-layer meta-vit-fpga'
-Add 'IMAGE_INSTALL:append = " grow-home"' to your local.conf

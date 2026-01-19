@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+#MISE description="Copy SSH public keys to the board for passwordless login"
+#MISE wait_for=["board:get-ip"]
+
+#USAGE flag "-f" help="Force copy keys without checking if they are already installed"
+#USAGE flag "-s" help="Show which keys would be copied without actually copying"
+#USAGE flag "-u --user <username>" help="SSH login username [default: petalinux]" default="petalinux"
+#USAGE flag "-n --network <prefix>" help="IPv6 network prefix" env="RA_PREFIX"
+
+USER=${usage_user?}
+ADDR=$(mise run board:get-ip "${usage_network?}") || exit 1
+
+ssh-copy-id "${usage_f:+-f }${usage_s:+-n }${USER}@${ADDR}"

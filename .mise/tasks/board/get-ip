@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+#MISE description="Identifies devboard global IPv6 by the configured prefix"
+
+#USAGE arg <prefix> help="IPv6 network prefix" env="RA_PREFIX"
+
+PREFIX=${usage_prefix?}
+
+# Query prefixed route details to get associated interface device
+QUERY=$(ip -j route get "$PREFIX" 2>&1)
+
+case "$QUERY" in
+RTNETLINK*)
+  echo "Connection error:${QUERY#*:}" >&2
+  exit 1
+  ;;
+*)
+  DEV=$(echo "$QUERY" | jq -r '.[0].dev')
+  ;;
+esac
+
+# Get devboard's link-local (fe80::*) address from device neighbor list.
+# The link-local address is the only one guaranteed to be cached in the kernel NDP table
+# although you could query the global address as well after first direct interaction
+ADDR=$(ip -j neigh show |
+  jq -r ".[] | select(.dev == \"$DEV\" and (.dst | contains(\"fe80::\"))) | .dst")
+
+# Assemble global address as network prefix + link-local id (SLAAC)
+echo "${PREFIX%:}${ADDR#fe80::}"

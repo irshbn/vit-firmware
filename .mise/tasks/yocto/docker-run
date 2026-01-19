@@ -2,25 +2,52 @@
 set -e
 
 #MISE description="Start the containerized xilinx-yocto buildserver"
+#MISE alias="y"
 
-#USAGE flag "--dl-cache" {
-#USAGE  arg <dir>
+#USAGE flag "--dl-cache <dir>" {
 #USAGE  help "Yocto downloads cache local bind mount [default: $XDG_CACHE_HOME/yocto/downloads]"
 #USAGE  env "YOCTO_DL_DIR"
 #USAGE  default "$XDG_CACHE_HOME/yocto/downloads"
 #USAGE }
-#USAGE flag "--sstate-cache" {
-#USAGE  arg <dir>
+#USAGE flag "--sstate-cache <dir>" {
 #USAGE  help "Yocto sstate-cache local bind mount [default: $XDG_CACHE_HOME/yocto/sstate-cache]"
 #USAGE  env "YOCTO_SSTATE_DIR"
 #USAGE  default "$XDG_CACHE_HOME/yocto/sstate-cache"
 #USAGE }
+#USAGE flag "--ra-prefix <ipv6>" {
+#USAGE  help "Router advertisement prefix for radvd daemon"
+#USAGE  env "RA_PREFIX"
+#USAGE }
+#USAGE flag "--xilinx-version <rel>" {
+#USAGE  help "Xilinx SDK version for yocto of the form vYYYY.MM [ex: v2024.2]"
+#USAGE  env "XIL_VERSION"
+#USAGE }
 #USAGE arg "<image>" help="Yocto docker image reference" env="YOCTO_IMAGE"
+
+WARN='\e[33m'
+CLEAR='\e[0m'
 
 # We have to use eval here to allow nested expansion of XDG_CACHE_HOME
 DL_DIR=$(eval echo "${usage_dl_cache?}")
 SSTATE_DIR=$(eval echo "${usage_sstate_cache?}")
 IMAGE_REFERENCE="${usage_image?}"
+
+if [[ -n $usage_xilinx_version ]]; then
+  XIL_BRANCH="rel-$usage_xilinx_version"
+elif [[ -n $(command -v vivado) ]]; then
+  echo -e "${WARN}Warning${CLEAR}: Xilinx SDK version was not set, inferring it from local Vivado version" >&2
+  XIL_BRANCH="rel-$(vivado -version | awk 'NR==1 {print $2}')"
+else
+  echo -e "${WARN}WARNING: Xilinx SDK version was not set, nor was Vivado found locally to infer it." >&2
+  echo -e "Container will run in a dry-run mode without SDK setup.\n${CLEAR}" >&2
+fi
+
+BBPASS=("DL_DIR" "SSTATE_DIR" "RA_PREFIX")
+ENVS=(
+  "BB_ENV_PASSTHROUGH_ADDITIONS=${BBPASS[*]}"
+  "RA_PREFIX=${usage_ra_prefix:-2001:db8:1:0::}"
+  "XIL_BRANCH=${XIL_BRANCH}"
+)
 
 mkdir -p yocto "$DL_DIR" "$SSTATE_DIR"
 docker run \
@@ -29,6 +56,7 @@ docker run \
   --cap-add NET_ADMIN \
   --hostname buildserver \
   -it --rm \
+  "${ENVS[@]/#/-e}" \
   -v /tftpboot:/tftpboot \
   -v "$DL_DIR":/home/build/downloads \
   -v "$SSTATE_DIR":/home/build/sstate-cache \

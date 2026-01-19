@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+#MISE description="Connect to board via SSH"
+#MISE alias="c"
+#MISE wait_for=["board:get-ip"]
+
+#USAGE flag "-u --user <username>" help="SSH login username [default: petalinux]" default="petalinux"
+#USAGE flag "-n --network <prefix>" help="IPv6 network prefix" env="RA_PREFIX"
+
+USER=${usage_user?}
+ADDR=$(mise run board:get-ip "${usage_network?}") || exit 1
+
+ssh -t "${USER}@${ADDR}"

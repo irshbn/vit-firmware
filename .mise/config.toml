@@ -1,5 +1,8 @@
 [env]
 YOCTO_IMAGE = { required = true }
+RA_PREFIX = "2001:db8:1:42::"
+XIL_VERSION = "v2024.2"
 
 [tools]
+jq = "latest"
 usage = "latest"
