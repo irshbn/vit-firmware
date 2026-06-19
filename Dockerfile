@@ -8,35 +8,35 @@ RUN touch /var/mail/ubuntu && chown ubuntu /var/mail/ubuntu && userdel -r ubuntu
 ARG DEBIAN_FRONTEND=noninteractive
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update && apt-get install --no-install-recommends -yq \
-    build-essential \
-    chrpath \
-    cpio \
-    curl \
-    debianutils \
-    diffstat \
-    file \
-    gawk \
-    gcc \
-    git \
-    iputils-ping \
-    libacl1 \
-    locales \
-    lz4 \
-    python3 \
-    python3-git \
-    python3-jinja2 \
-    python3-pexpect \
-    python3-pip \
-    python3-subunit \
-    python3-yaml \
-    socat \
-    ssh \ 
-    sudo \
-    texinfo \
-    unzip \
-    wget \
-    xz-utils \
-    zstd \
+    build-essential=12.10ubuntu1 \
+    chrpath=0.16-2build1 \
+    cpio=2.15+dfsg-1ubuntu2 \
+    curl=8.5.0-2ubuntu10.6 \
+    debianutils=5.17build1 \
+    diffstat=1.66-1build1 \
+    file=1:5.45-3build1 \
+    gawk=1:5.2.1-2build3 \
+    gcc=4:13.2.0-7ubuntu1 \
+    git=1:2.43.0-1ubuntu7.3 \
+    iputils-ping=3:20240117-1ubuntu0.1 \
+    libacl1=2.3.2-1build1.1 \
+    locales=2.39-0ubuntu8.6 \
+    lz4=1.9.4-1build1.1 \
+    python3=3.12.3-0ubuntu2.1 \
+    python3-git=3.1.37-3 \
+    python3-jinja2=3.1.2-1ubuntu1.3 \
+    python3-pexpect=4.9-2 \
+    python3-pip=24.0+dfsg-1ubuntu1.3 \
+    python3-subunit=1.4.2-3build1 \
+    python3-yaml=6.0.1-2build2 \
+    socat=1.8.0.0-4build3 \
+    ssh=1:9.6p1-3ubuntu13.14 \
+    sudo=1.9.15p5-3ubuntu5.24.04.1 \
+    texinfo=7.1-3build2 \
+    unzip=6.0-28ubuntu4.1 \
+    wget=1.21.4-1ubuntu4.1 \
+    xz-utils=5.6.1+really5.4.5-1ubuntu0.2 \
+    zstd=1.5.5+dfsg2-2build1.1 \
     && rm -rf /var/lib/apt-lists/*
 
 # Download repo tool from source

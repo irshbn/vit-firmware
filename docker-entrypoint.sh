@@ -10,7 +10,6 @@ if [[ -n $XIL_BRANCH && -d work ]]; then
     repo sync
     source setupsdk build
     bitbake-layers add-layer meta-vit-fpga
-    echo 'INHERIT += "rm_work"' >>conf/local.conf # Remove workdir artifacts after building by default
   else
     source setupsdk build
   fi

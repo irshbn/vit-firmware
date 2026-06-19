@@ -1,8 +1,15 @@
-# Ignore yocto files except custom meta layer
+# Ignore yocto files except custom meta layer and build conf
 /yocto/*
 !/yocto/sources/
 /yocto/sources/*
 !/yocto/sources/meta-vit-fpga/
+
+!/yocto/build/
+/yocto/build/*
+!/yocto/build/conf/
+/yocto/build/conf/*
+!/yocto/build/conf/local.conf
+!/yocto/build/conf/bblayers.conf
 
 # Ignore vivado project & build files and stacktraces
 /vivado/project/
